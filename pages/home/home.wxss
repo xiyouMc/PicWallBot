@@ -1,0 +1,67 @@
+/* pages/home/home.wxss */
+
+.wxSearch-section {
+  background-color: #fff;
+  padding: 5px 10px;
+  border: 1px #eee solid;
+}
+
+.wxSearch-input {
+  flex: 8;
+  background-color: #eee;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 98%;
+}
+
+.clear-text {
+  height: 30px;
+  width: auto;
+  font-size: 13px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.get-pic {
+  height: 30px;
+  width: 80px;
+  font-size: 10px;
+  margin-top: 10px;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.slogon {
+  font-size: 12px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.save-pic {
+  width: 95%;
+  background-color: #3cc51f;
+  height: 40px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 15px;
+}
+
+.pic {
+  margin-top: 5px;
+  width: 80%;
+  border-radius: 8px;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 100px;
+  float: left;
+  font-size: 15px;
+  color: black;
+  font-family: Bold;
+}
