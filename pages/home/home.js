@@ -15,7 +15,7 @@ Page({
     picUrl: picUrl,
     avatarName: '',
     inputUrl: '',
-
+    videoUrl: '',
     //图片地址
     imgList: [],
     //是否采用衔接滑动  
@@ -133,8 +133,35 @@ Page({
             avatarName: e.data.avatar_name,
             // picUrls: picUrl
             // picUrl: picUrl[0]
-            imgList: picUrl
+            // imgList: picUrl
+            isVideo: e.data.isVideo
           })
+          if (e.data.isVideo) {
+            that.setData({
+              videoUrl: e.data.videoUrl
+            })
+            // wx.downloadFile({
+            //   url: e.data.videoUrl,
+            //   success: function(res) {
+            //     if (res.statusCode === 200) {
+            //       wx.saveVideoToPhotosAlbum({
+            //         filePath: res.tempFilePath,
+            //         success(res) {
+            //           console.log(res)
+            //           wx.showToast({
+            //             title: '保存成功',
+            //           })
+            //         }
+            //       })
+            //     }
+            //   }
+            // })
+
+          } else {
+            that.setData({
+              imgList: picUrl
+            })
+          }
         }
       },
       complete: function() {

@@ -18,15 +18,19 @@
 
     <view classs='viewPic'>
 
-      <swiper indicator-dots="{{indicatorDots}}" vertical="{{vertical}}" autoplay="{{autoplay}}" duration="{{duration}}" interval='{{interval}}' bindchange="bindchange" circular="{{circular}}" style="height:700rpx;">
+      <swiper wx:if="{{!isVideo}}" indicator-dots="{{indicatorDots}}" vertical="{{vertical}}" autoplay="{{autoplay}}" duration="{{duration}}" interval='{{interval}}' bindchange="bindchange" circular="{{circular}}" style="height:700rpx;">
         <block wx:for='{{imgList}}' wx:key="{{index}}">
           <swiper-item>
+
             <image class='pic' mode='aspectFit' src='{{item}}' data-id='{{index}}' bindtap='picTap' bindload="imageLoad">
               <!-- <image src="{{item}}" data-id='{{index}}' class="slide-image" mode="widthFix" bindload="imageLoad" /> -->
             </image>
+
           </swiper-item>
         </block>
       </swiper>
+
+      <video wx:else style="width:100%;margin-top:5px" src='{{videoUrl}}' objectFit='cover' data-id='{{videoUrl}}'></video>
 
 
 
