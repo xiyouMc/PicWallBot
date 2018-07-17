@@ -10,12 +10,34 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isShowPic: true,
+    isHidePic: false,
     avatarUrl: avatarUrl,
     picUrl: picUrl,
     avatarName: '',
     inputUrl: '',
-    imgheights: []
+
+    //图片地址
+    imgList: [],
+    //是否采用衔接滑动  
+    circular: false,
+    //是否显示画板指示点  
+    indicatorDots: true,
+    //选中点的颜色  
+    indicatorcolor: "#fff",
+    //是否竖直  
+    vertical: false,
+    //是否自动切换  
+    autoplay: false,
+    //自动切换的间隔
+    interval: 2500,
+    //滑动动画时长毫秒  
+    duration: 100,
+    //所有图片的高度  
+    imgheights: [],
+    //图片宽度 
+    imgwidth: 750,
+    //默认  
+    current: 0
   },
 
   /**
@@ -39,7 +61,8 @@ Page({
     var that = this
     wx.getClipboardData({
       success: function(res) {
-        if (res.data.indexOf('instagram.com') != -1) {
+        if (res.data.indexOf('instagram.com') != -1 && inputUrl != res.data) {
+          inputUrl = res.data
           that.setData({
             insUrl: res.data
           })
@@ -103,12 +126,14 @@ Page({
           console.log(e.data)
           avatarUrl = e.data.avatar_url
           picUrl = e.data.imgsBase64;
+          console.log(picUrl)
           that.setData({
-            isShowPic: false,
+            isHidePic: false,
             avatarUrl: e.data.avatar_url,
             avatarName: e.data.avatar_name,
             // picUrls: picUrl
-            picUrl: picUrl[0]
+            // picUrl: picUrl[0]
+            imgList: picUrl
           })
         }
       },
@@ -117,6 +142,7 @@ Page({
       }
     })
   },
+
   getPic: function(e) {
     const insUrl = e.detail.value;
     console.log(insUrl)
@@ -125,32 +151,35 @@ Page({
       this.requestPic(insUrl)
     }
   },
+
   avatarTap: function() {
     wx.previewImage({
       urls: [avatarUrl],
     })
   },
+
   picTap: function() {
     wx.previewImage({
       urls: picUrl,
     })
   },
+
   clearText: function() {
     this.setData({
       insUrl: ''
     })
   },
+
   inputUrl: function(e) {
     inputUrl = e.detail.value
     console.log(inputUrl)
   },
+
   getPic: function() {
     if (inputUrl != '') {
       this.requestPic(inputUrl)
     }
   },
-
-
 
   imageLoad: function(e) {
     //获取图片真实宽度
@@ -169,6 +198,7 @@ Page({
       imgheights: imgheights,
     })
   },
+
   bindchange: function(e) {
     console.log(e.detail.current)
     this.setData({

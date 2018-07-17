@@ -8,7 +8,7 @@
 
     <button class='clear-text' style='margin-left:20px' bindtap='getPic'>获取图片</button>
   </view>
-  <view hidden='{{isShowPic}}'>
+  <view hidden='{{isHidePic}}'>
     <view class='"wxSearch-section'></view>
     <button hidden='true' class='save-pic'>保存到相册</button>
     <view style='margin-top:5px'>
@@ -16,13 +16,33 @@
       <text class='avatar' style=' margin-left:10px;'>{{avatarName}}</text>
     </view>
 
-    <view>
-      <image class='pic' mode='widthFix' src='{{picUrl}}' bindtap='picTap'></image>
+    <view classs='viewPic'>
+
+      <swiper indicator-dots="{{indicatorDots}}" vertical="{{vertical}}" autoplay="{{autoplay}}" duration="{{duration}}" interval='{{interval}}' bindchange="bindchange" circular="{{circular}}" style="height:700rpx;">
+        <block wx:for='{{imgList}}' wx:key="{{index}}">
+          <swiper-item>
+            <image class='pic' mode='aspectFit' src='{{item}}' data-id='{{index}}' bindtap='picTap' bindload="imageLoad">
+              <!-- <image src="{{item}}" data-id='{{index}}' class="slide-image" mode="widthFix" bindload="imageLoad" /> -->
+            </image>
+          </swiper-item>
+        </block>
+      </swiper>
+
+
+
+
+      <!-- <view> -->
+
+      <!-- </view> -->
+
     </view>
+
+    <!-- <image class='picNum' src='/assets/picNum.png'></image>
+    <text class='picNum' style='right:0%;font-size:13px'>44</text> -->
   </view>
 
 
-  <view>
+  <view style='margin-top:20px'>
     <text class='slogon'>由公众号【insloader】 出品</text>
   </view>
 

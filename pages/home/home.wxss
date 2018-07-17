@@ -52,8 +52,13 @@
 
 .pic {
   margin-top: 5px;
-  width: 80%;
-  border-radius: 8px;
+  width: 100%;
+  height: 90%;
+  /* border-radius: 8px; */
+}
+
+.viewPic {
+  /* display: inline-block; *//* margin: 0 auto; *//* text-align: center; */
 }
 
 .avatar {
@@ -64,4 +69,14 @@
   font-size: 15px;
   color: black;
   font-family: Bold;
+}
+
+.picNum {
+  float: right;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  z-index: 1;
+  right: 20%;
+  top: 10px;
 }
