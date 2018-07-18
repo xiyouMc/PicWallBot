@@ -80,3 +80,9 @@
   right: 20%;
   top: 10px;
 }
+
+.saveToAblum{
+  color: #3cc51f;
+  font-size: 14px;
+  
+}
