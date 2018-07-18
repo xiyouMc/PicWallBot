@@ -30,7 +30,7 @@
         </block>
       </swiper>
 
-
+<!--TODO: 将视频的封面展示在 Swiper 中，点击 播放视频！！！  -->
       <block hidden="{{!needShowVideo}}" wx:for='{{dataUrls}}' wx:key="{{index}}">
         <video wx:if="{{item.isVideo}}" style="width:100px;height:100px;margin-top:25px;margin-left:5px" src='{{item.src}}' enable-progress-gesture='false' objectFit='cover' data-id='{{index}}'></video>
       </block>
