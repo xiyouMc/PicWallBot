@@ -1,0 +1,5 @@
+<!--pages/video/video.wxml-->
+ <video style='margin-top:100px;width:100%' src='{{videoUrl}}' enable-progress-gesture='false' autoplay='true' objectFit='cover'>
+</video> 
+
+<button hidden='{{!isShowSave}}' class='saveToAblum' style='margin-top:22px' bindtap='saveToAblum'>{{saveTip}}</button>

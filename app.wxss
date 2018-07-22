@@ -1,4 +1,5 @@
 /**app.wxss**/
+
 .container {
   height: 100%;
   display: flex;
@@ -7,6 +8,53 @@
   justify-content: space-between;
   padding: 200rpx 0;
   box-sizing: border-box;
-} 
+}
 
+.wxSearch-section {
+  background-color: #fff;
+  padding: 5px 10px;
+  border: 1px #eee solid;
+}
 
+.wxSearch-input {
+  flex: 8;
+  background-color: #eee;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 98%;
+}
+
+.clear-text {
+  height: 30px;
+  width: auto;
+  font-size: 13px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 100px;
+  float: left;
+  font-size: 15px;
+  color: black;
+  font-family: Bold;
+}
+
+#two{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  align-content:center;
+  justify-content:space-around;
+  height:90vh;
+}
+ 
+#two .area{
+  width:30vw;
+  text-align: center;
+}

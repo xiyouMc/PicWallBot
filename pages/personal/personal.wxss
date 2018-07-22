@@ -1,5 +1,4 @@
-/* pages/plugin/plugin.wxss */
-
+/* pages/personal/personal.wxss */
 
 .avatar {
   width: 80px;
@@ -8,4 +7,5 @@
   font-size: 15px;
   color: black;
   font-family: Bold;
+  margin-top: 5px;
 }

@@ -57,19 +57,40 @@ Page({
     console.log(options.inputUrl)
     onLoadInputUrl = options.inputUrl
     inputUrl = ''
+
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-
+    var isShowConfig = wx.getStorageSync('isShowIns')
+    if (isShowConfig != undefined && isShowConfig) {
+      this.setData({
+        'urlConfig': ' Instagram '
+      })
+    } else {
+      wx.request({
+        url: api.configApi,
+        success: function(res) {
+          console.log(res)
+          wx.setStorageSync('isShowIns', res.data.isShowIns)
+          if (res.data.isShowIns) {
+            this.setData({
+              'urlConfig': ' Instagram '
+            })
+          }
+        }
+      })
+    }
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
+
     var that = this
     if (onLoadInputUrl !== null && onLoadInputUrl !== undefined && onLoadInputUrl !== '') {
       that.setData({
@@ -152,6 +173,9 @@ Page({
           // var reg = <Title><[CDATA[(/.*)]\.*<![CDATA[(\.*)><\/PicUrl>\.*<![CDATA[(.*)></Description>.*<![CDATA[(.*)>;
           // reg.exec(e.data)
           console.log(e.data)
+          if (e.data.graphql == undefined){
+            return
+          }
           var shortcodeMedia = e.data.graphql.shortcode_media
           var owner = shortcodeMedia.owner
 
@@ -161,34 +185,23 @@ Page({
             for (var index = 0; index < shortcodeMedia.edge_sidecar_to_children.edges.length; index++) {
               var node = shortcodeMedia.edge_sidecar_to_children.edges[index].node
               var isVideo = node.is_video
-              if (!isVideo) {
-                that.setData({
-                  needShowSwipe: true
-                })
-              } else {
-                that.setData({
-                  needShowVideo: true
-                })
-              }
               dataUrls.push({
-                "src": isVideo ? node.video_url : node.display_resources[1].src,
+                "src": node.display_resources[1].src,
+                'videoUrl': isVideo ? node.video_url : '',
                 "isVideo": isVideo
               })
-              // picUrl.push(shortcodeMedia.edge_sidecar_to_children.edges[index].node.display_resources[1].src)
             }
           } else {
-            that.setData({
-              needShowSwipe: false,
-              needShowVideo: true
-            })
+
             dataUrls.push({
               "src": shortcodeMedia.display_resources[1].src,
+              'videoUrl': shortcodeMedia.is_video ? shortcodeMedia.video_url : '',
               "isVideo": shortcodeMedia.is_video
 
             })
-            // picUrl.push(shortcodeMedia.display_resources[1].src)
+
           }
-          // picUrl = e.data.imgsBase64;
+
           isVideo = shortcodeMedia.is_video
 
           console.log(dataUrls)
@@ -204,18 +217,7 @@ Page({
             saveTip: '保存到相册',
             dataUrls: dataUrls
           })
-          // if (isVideo) {
-          //   videoUrl = shortcodeMedia.video_url
-          //   that.setData({
-          //     videoUrl: videoUrl
-          //   })
 
-
-          // } else {
-          //   that.setData({
-          //     imgList: picUrl
-          //   })
-          // }
         }
       },
       complete: function() {
@@ -285,6 +287,11 @@ Page({
               }
             })
           },
+          fail: function(e) {
+            wx.showToast({
+              title: e,
+            })
+          },
           complete: function() {
             wx.hideLoading()
           }
@@ -308,10 +315,24 @@ Page({
     })
   },
 
-  picTap: function() {
-    wx.previewImage({
-      urls: picUrl,
-    })
+  picTap: function(event) {
+    console.log(event)
+
+    if (event.currentTarget.dataset.videourl != undefined && event.currentTarget.dataset.videourl != '') {
+      wx.navigateTo({
+        url: '/pages/video/video?videoUrl=' + event.currentTarget.dataset.videourl,
+      })
+    } else {
+      var picUrls = []
+      for (var index = 0; index < dataUrls.length; index++) {
+        if (!dataUrls[index].isVideo) {
+          picUrls.push(dataUrls[index].src)
+        }
+      }
+      wx.previewImage({
+        urls: picUrls,
+      })
+    }
   },
 
   clearText: function() {

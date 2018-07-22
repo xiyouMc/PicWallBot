@@ -1,0 +1,11 @@
+<scroll-view scroll-y='true' bindscrolltolower='bindscrolltolower' enable-back-to-top='true'>
+  <view id='two'>
+    <block wx:for='{{picUrls}}' wx:key='{{index}}'>
+      <view class="area">
+        <image mode="widthFix" class='avatar' style='background:#faa33a;width:100%;' src='{{item.src}}' bindtap='picTap'></image>
+
+        <!--<text style=' margin-left:10px;font-size:14px'>有 {{item.postCount}} 条状态，点击查看</text> -->
+      </view>
+    </block>
+  </view>
+</scroll-view>

@@ -1,5 +1,5 @@
 <view class="wxSearch-section" stype="position:fixed;top:0;width:95%;height:40px;padding-top:10px">
-  <input bindconfirm='getPic' bindinput='inputUrl' placeholder="粘贴地址" class='wxSearch-input' value="{{insUrl}}"></input>
+  <input bindconfirm='getPic' bindinput='inputUrl' placeholder="粘贴{{urlConfig}}图片或者视频地址" class='wxSearch-input' value="{{insUrl}}"></input>
 </view>
 
 <view style='vertical-align:middle;text-align:center'>
@@ -15,25 +15,28 @@
     </view>
 
     <view classs='viewPic'>
-
-      <swiper hidden='{{!needShowSwipe}}' indicator-dots="{{indicatorDots}}" vertical="{{vertical}}" autoplay="{{autoplay}}" duration="{{duration}}" interval='{{interval}}' bindchange="bindchange" circular="{{circular}}" style="height:700rpx;">
+      <!-- hidden='{{!needShowSwipe}}' -->
+      <swiper indicator-dots="{{indicatorDots}}" vertical="{{vertical}}" autoplay="{{autoplay}}" duration="{{duration}}" interval='{{interval}}' bindchange="bindchange" circular="{{circular}}" style="height:700rpx;">
         <block wx:for='{{dataUrls}}' wx:key="{{index}}">
-          <swiper-item>
+          <swiper-item style='display: block;'>
 
-            <image wx:if="{{!item.isVideo}}" class='pic' mode='aspectFit' src='{{item.src}}' data-id='{{index}}' bindtap='picTap' bindload="imageLoad">
+
+            <image class='pic' mode='aspectFit' src='{{item.src}}' data-videoUrl='{{item.videoUrl}}' data-id='{{index}}' bindtap='picTap' bindload="imageLoad">
               <!-- <image src="{{item}}" data-id='{{index}}' class="slide-image" mode="widthFix" bindload="imageLoad" /> -->
             </image>
 
+            <image style='position:relative;z-index:2;' wx:if="{{item.isVideo}}" src='/assets/play.png'></image>
+            <!-- wx:if="{{!item.isVideo}}"  -->
             <!-- <video wx:else style="width:100%;margin-top:5px" src='{{item.src}}' enable-progress-gesture='false' objectFit='cover' data-id='{{index}}'></video> -->
 
           </swiper-item>
         </block>
       </swiper>
 
-<!--TODO: 将视频的封面展示在 Swiper 中，点击 播放视频！！！  -->
-      <block hidden="{{!needShowVideo}}" wx:for='{{dataUrls}}' wx:key="{{index}}">
+      <!--TODO: 将视频的封面展示在 Swiper 中，点击 播放视频！！！  -->
+      <!-- <block hidden="{{!needShowVideo}}" wx:for='{{dataUrls}}' wx:key="{{index}}">
         <video wx:if="{{item.isVideo}}" style="width:100px;height:100px;margin-top:25px;margin-left:5px" src='{{item.src}}' enable-progress-gesture='false' objectFit='cover' data-id='{{index}}'></video>
-      </block>
+      </block> -->
 
 
       <!-- <view> -->
@@ -59,6 +62,12 @@
   <view style='flex-direction:row;margin-top:5px'>
     <button open-type="share" class='clear-text'>分享给你的好友呗</button>
 
-    <button open-type="contact" class='clear-text' style='margin-left:20px'>有问题，我要反馈</button>
+    <button open-type="feedback" class='clear-text' style='margin-left:20px'>有问题，我要反馈</button>
+  </view>
+
+  <view style='position:fixed; bottom:10px;right:10px;z-index:8888;'>
+     <button style="plain:true;border:none;padding:0;width:100rpx;height:100rpx;border-radius:100px;" open-type='contact'> 
+      <image src='/assets/contact.png' style='width:100rpx;height:100rpx;border-radius:100px;margin-right:10px'></image>
+     </button> 
   </view>
 </view>
