@@ -65,7 +65,7 @@
     <button open-type="feedback" class='clear-text' style='margin-left:20px'>有问题，我要反馈</button>
   </view>
 
-  <view style='position:fixed; bottom:10px;right:10px;z-index:8888;'>
+  <view style='position:fixed; bottom:30px;right:15px;z-index:8888;'>
     <button style="plain:true;border:none;padding:0;width:100rpx;height:100rpx;border-radius:100px;" open-type='contact'>
       <image src='/assets/contact.png' style='width:100rpx;height:100rpx;border-radius:100px;margin-right:10px'></image>
     </button>
