@@ -1,5 +1,5 @@
 <view class="wxSearch-section" stype="position:fixed;top:0;width:95%;height:40px;padding-top:10px">
-  <input bindconfirm='getPic' bindinput='inputUrl' placeholder="粘贴{{urlConfig}}个人主页链接" class='wxSearch-input' value="{{insUrl}}"></input>
+  <input bindconfirm='getPic' bindinput='inputUrl' placeholder="粘贴{{urlConfig}}个人主页链接或者用户名" class='wxSearch-input' value="{{insUrl}}"></input>
 </view>
 
 <view style='vertical-align:middle;text-align:center'>

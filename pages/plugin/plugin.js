@@ -77,7 +77,7 @@ Page({
       wx.getClipboardData({
         success: function(res) {
           if (res.data.indexOf('instagram.com') != -1 && personalUrl != res.data) {
-
+            personalUrl = res.data
             that.setData({
               insUrl: res.data
             })
@@ -124,6 +124,9 @@ Page({
       data: defaultData.replace('##', url),
       success: function(e) {
         if (e.data.userAgent == undefined) {
+          wx.showToast({
+            title: '我怀疑你写错了地址！！！',
+          })
           return;
         }
         console.log(e)
@@ -192,16 +195,26 @@ Page({
   },
 
   getPic: function(e) {
-    const insUrl = e.detail.value;
+    var insUrl = e.detail.value;
     console.log(insUrl)
     if (insUrl.indexOf('instagram.com') != -1) {
       //是 ins 的地址
+      this.requestPic(insUrl)
+    } else {
+      insUrl = 'https://instagram.com/' + insUrl
       this.requestPic(insUrl)
     }
   },
 
   inputUrl: function(e) {
     inputUrl = e.detail.value
+    if (inputUrl.indexOf('instagram.com') != -1) {
+      //是 ins 的地址
+      // this.requestPic(insUrl)
+    } else {
+      inputUrl = 'https://instagram.com/' + inputUrl
+      // this.requestPic(insUrl)
+    }
     console.log(inputUrl)
   },
   getPic: function() {

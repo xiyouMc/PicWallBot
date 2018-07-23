@@ -10,6 +10,7 @@ var isVideo = false
 var saveTip = '保存到相册'
 var isShowSave = true
 var onLoadInputUrl = ''
+var isLoading = false
 Page({
 
   /**
@@ -101,7 +102,7 @@ Page({
       wx.getClipboardData({
         success: function(res) {
           if (res.data.indexOf('instagram.com') != -1 && inputUrl != res.data) {
-
+            inputUrl = res.data
             that.setData({
               insUrl: res.data
             })
@@ -148,10 +149,10 @@ Page({
   },
 
   requestPic: function(url) {
-    if (inputUrl === url) {
+    if (isLoading) {
       return
     }
-    inputUrl = url
+    isLoading = true
     this.setData({
       needShowSwipe: false,
       needShowVideo: false
@@ -161,6 +162,7 @@ Page({
     })
     dataUrls = []
     var that = this
+
     wx.request({
       url: api.serverApi,
       method: "POST",
@@ -170,8 +172,6 @@ Page({
         if (e.data.errorcode) {
           console.log("请求失败")
         } else {
-          // var reg = <Title><[CDATA[(/.*)]\.*<![CDATA[(\.*)><\/PicUrl>\.*<![CDATA[(.*)></Description>.*<![CDATA[(.*)>;
-          // reg.exec(e.data)
           console.log(e.data)
           if (e.data.graphql == undefined) {
             return
@@ -182,11 +182,12 @@ Page({
           avatarUrl = owner.profile_pic_url
           avatarName = owner.username
           if (shortcodeMedia.edge_sidecar_to_children) {
-            for (var index = 0; index < shortcodeMedia.edge_sidecar_to_children.edges.length; index++) {
-              var node = shortcodeMedia.edge_sidecar_to_children.edges[index].node
+            var edges = shortcodeMedia.edge_sidecar_to_children.edges
+            edges.forEach(function(item, index, edges) {
+              var node = item.node
               var isVideo = node.is_video
               var danmuList = []
-              if (node.is_video) {
+              if (node.is_video && node.edge_media_to_comment != undefined) {
                 var comments = node.edge_media_to_comment.edges
                 if (comments != undefined && comments.length > 0) {
                   comments.forEach(function(item, index, comments) {
@@ -200,7 +201,7 @@ Page({
                 'videoUrl': isVideo ? node.video_url : '',
                 "isVideo": isVideo
               })
-            }
+            })
           } else {
             var danmuList = []
             if (shortcodeMedia.is_video) {
@@ -223,7 +224,7 @@ Page({
           }
 
           isVideo = shortcodeMedia.is_video
-
+          console.log('test->>>>>>>>>>>')
           console.log(dataUrls)
           that.setData({
             isHidePic: false,
@@ -241,6 +242,7 @@ Page({
         }
       },
       complete: function() {
+        isLoading = false
         wx.hideLoading()
       }
     })
@@ -326,6 +328,10 @@ Page({
     if (insUrl.indexOf('instagram.com') != -1) {
       //是 ins 的地址
       this.requestPic(insUrl)
+    } else {
+      wx.showToast({
+        title: '您填写的地址不对',
+      })
     }
   },
 
@@ -367,9 +373,15 @@ Page({
     console.log(inputUrl)
   },
 
-  getPic: function() {
+  getBtPic: function() {
+    console.log('getBtPic')
+    console.log(inputUrl)
     if (inputUrl != '') {
       this.requestPic(inputUrl)
+    } else {
+      wx.showToast({
+        title: '您填写的地址不对',
+      })
     }
   },
 
@@ -398,15 +410,33 @@ Page({
     })
   },
 
+  picError: function(e) {
+    wx.showModal({
+      title: '提示',
+      content: '网络有问题，如无法解决请点击右下角客服咨询',
+    })
+    this.setData({
+      isHidePic: true,
+      avatarUrl: '',
+      avatarName: avatarName,
+      // picUrls: picUrl
+      // picUrl: picUrl[0]
+      // imgList: picUrl
+      isVideo: 'false',
+      isShowSave: false,
+      saveTip: '保存到相册',
+      dataUrls: []
+    })
+  },
   onShareAppMessage: function(res) {
     if (res.from === 'button') {
       // 来自页面内转发按钮
       console.log(res.target)
     }
     return {
-      title: '给你分享一张图片',
+      title: '一键下载 Instagram 图片和视频，很赞',
       path: '/pages/home/home?inputUrl=' + inputUrl,
-      imageUrl: dataUrls[0]
+      imageUrl: dataUrls[0].src
     }
   }
 })
