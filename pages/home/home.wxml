@@ -21,7 +21,7 @@
           <swiper-item style='display: block;'>
 
 
-            <image class='pic' mode='aspectFit' src='{{item.src}}' data-videoUrl='{{item.videoUrl}}' data-id='{{index}}' bindtap='picTap' bindload="imageLoad">
+            <image class='pic' mode='aspectFit' src='{{item.src}}' data-videoUrl='{{item.videoUrl}}' data-id='{{index}}' bindtap='picTap' bindload="imageLoad" data-danmuList='{{item.danmuList}}'>
               <!-- <image src="{{item}}" data-id='{{index}}' class="slide-image" mode="widthFix" bindload="imageLoad" /> -->
             </image>
 

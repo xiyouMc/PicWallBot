@@ -4,7 +4,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   padding: 200rpx 0;
   box-sizing: border-box;
@@ -45,16 +45,16 @@
   font-family: Bold;
 }
 
-#two{
-  display:flex;
-  flex-direction:row;
-  flex-wrap:wrap;
-  align-content:center;
-  justify-content:space-around;
-  height:90vh;
+#two {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: space-around;
+  /* height:90vh; */
 }
- 
-#two .area{
-  width:30vw;
+
+#two .area {
+  width: 30vw;
   text-align: center;
 }

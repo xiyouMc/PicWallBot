@@ -17,6 +17,7 @@ var picUrls = []
 var isLoading = false;
 var rhxgis = ''
 var userId = ''
+var picSrcUrls = []
 Page({
 
   /**
@@ -26,12 +27,17 @@ Page({
 
   },
 
+  preparePicSrcUrls: function() {
+    for (var index = 0; index < picUrls.length; index++) {
+      picSrcUrls.push(picUrls[index].srcHD)
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
     console.log(options)
-
+    picSrcUrls = []
     // ua = options.ua
     // queryId = options.queryId
     // queryData = options.queryData
@@ -64,8 +70,22 @@ Page({
         tmpPicUrls.forEach(function(item, index, tmpPicUrls) {
           console.log(item.node)
           if (item.node != undefined) {
+            var danmuList = []
+            if (item.node.is_video) {
+              var comments = item.node.edge_media_to_comment.edges
+              if (comments != undefined && comments.length > 0) {
+                comments.forEach(function(item, index, comments) {
+                  danmuList.push(item.node.text)
+                })
+              }
+
+            }
             picUrls = picUrls.concat({
-              'src': item.node.thumbnail_resources[3].src
+              'danmuList': danmuList,
+              'videoUrl': item.node.is_video ? item.node.video_url : '',
+              'isVideo': item.node.is_video,
+              'src': item.node.thumbnail_src,
+              'srcHD': item.node.thumbnail_resources[item.node.thumbnail_resources.length - 1].src
             })
           }
         })
@@ -74,6 +94,7 @@ Page({
         that.setData({
           'picUrls': picUrls
         })
+        that.preparePicSrcUrls()
         //计算新的 gis
         console.log(picUrls)
         if (res.data.data.user.edge_owner_to_timeline_media.page_info.has_next_page) {
@@ -141,14 +162,30 @@ Page({
           tmppicUrls.forEach(function(item, index, tmppicUrls) {
             console.log(item)
             if (item.node != undefined) {
+              var danmuList = []
+              if (item.node.is_video) {
+                var comments = item.node.edge_media_to_comment.edges
+                if (comments != undefined && comments.length > 0) {
+                  comments.forEach(function(item, index, comments) {
+                    danmuList.push(item.node.text)
+                  })
+                }
+
+
+              }
               picUrls = picUrls.concat({
-                'src': item.node.thumbnail_resources[3].src
+                'danmuList': danmuList,
+                'videoUrl': item.node.is_video ? item.node.video_url : '',
+                'isVideo': item.node.is_video,
+                'src': item.node.thumbnail_src,
+                'srcHD': item.node.thumbnail_resources[item.node.thumbnail_resources.length - 1].src
               })
             }
           })
           that.setData({
             'picUrls': picUrls
           })
+          that.preparePicSrcUrls()
           console.log(picUrls)
           // console.log(picUrls[0].node.thumbnail_resources[1].src)
         }
@@ -199,8 +236,8 @@ Page({
 
   },
 
-  bindscrolltolower: function(e) {
-    console.log('bindscrolltolower')
+  loadMore: function(e) {
+    console.log('loadMore')
     var url = requestMoreDataDefault.replace('####', insGISId).replace('###', ua).replace('##', queryData).replace('#', queryId)
     this.requestMoreUrl(url)
   },
@@ -209,7 +246,8 @@ Page({
    */
   onReachBottom: function() {
     console.log('onReachBottom')
-
+    var url = requestMoreDataDefault.replace('####', insGISId).replace('###', ua).replace('##', queryData).replace('#', queryId)
+    this.requestMoreUrl(url)
   },
 
   /**
@@ -219,6 +257,17 @@ Page({
 
   },
   picTap: function(res) {
-
+    console.log(res)
+    if (res.currentTarget.dataset.isvideo) {
+      var videoDanmu = res.currentTarget.dataset.danmulist
+      wx.navigateTo({
+        url: '/pages/video/video?videoUrl=' + res.currentTarget.dataset.videourl + '&danmuList=' + videoDanmu + '',
+      })
+    } else {
+      wx.previewImage({
+        current: res.currentTarget.dataset.url,
+        urls: picSrcUrls,
+      })
+    }
   }
 })

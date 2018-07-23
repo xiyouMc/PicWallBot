@@ -173,7 +173,7 @@ Page({
           // var reg = <Title><[CDATA[(/.*)]\.*<![CDATA[(\.*)><\/PicUrl>\.*<![CDATA[(.*)></Description>.*<![CDATA[(.*)>;
           // reg.exec(e.data)
           console.log(e.data)
-          if (e.data.graphql == undefined){
+          if (e.data.graphql == undefined) {
             return
           }
           var shortcodeMedia = e.data.graphql.shortcode_media
@@ -185,15 +185,35 @@ Page({
             for (var index = 0; index < shortcodeMedia.edge_sidecar_to_children.edges.length; index++) {
               var node = shortcodeMedia.edge_sidecar_to_children.edges[index].node
               var isVideo = node.is_video
+              var danmuList = []
+              if (node.is_video) {
+                var comments = node.edge_media_to_comment.edges
+                if (comments != undefined && comments.length > 0) {
+                  comments.forEach(function(item, index, comments) {
+                    danmuList.push(item.node.text)
+                  })
+                }
+              }
               dataUrls.push({
+                'danmuList': danmuList,
                 "src": node.display_resources[1].src,
                 'videoUrl': isVideo ? node.video_url : '',
                 "isVideo": isVideo
               })
             }
           } else {
-
+            var danmuList = []
+            if (shortcodeMedia.is_video) {
+              var comments = shortcodeMedia.edge_media_to_comment.edges
+              if (comments != undefined && comments.length > 0) {
+                comments.forEach(function(item, index, comments) {
+                  danmuList.push(item.node.text)
+                })
+              }
+            }
+            console.log(danmuList)
             dataUrls.push({
+              'danmuList': danmuList,
               "src": shortcodeMedia.display_resources[1].src,
               'videoUrl': shortcodeMedia.is_video ? shortcodeMedia.video_url : '',
               "isVideo": shortcodeMedia.is_video
@@ -319,8 +339,9 @@ Page({
     console.log(event)
 
     if (event.currentTarget.dataset.videourl != undefined && event.currentTarget.dataset.videourl != '') {
+      var videoDanmu = event.currentTarget.dataset.danmulist
       wx.navigateTo({
-        url: '/pages/video/video?videoUrl=' + event.currentTarget.dataset.videourl,
+        url: '/pages/video/video?videoUrl=' + event.currentTarget.dataset.videourl + '&danmuList=' + videoDanmu + '',
       })
     } else {
       var picUrls = []

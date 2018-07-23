@@ -1,5 +1,5 @@
 <!--pages/video/video.wxml-->
- <video style='margin-top:100px;width:100%' src='{{videoUrl}}' enable-progress-gesture='false' autoplay='true' objectFit='cover'>
-</video> 
+<video style='margin-top:100px;width:100%' src='{{videoUrl}}' enable-progress-gesture='false' autoplay='true' objectFit='contain' enable-danmu='true' danmu-btn='true' danmu-list='{{danmuList}}'>
+</video>
 
 <button hidden='{{!isShowSave}}' class='saveToAblum' style='margin-top:22px' bindtap='saveToAblum'>{{saveTip}}</button>

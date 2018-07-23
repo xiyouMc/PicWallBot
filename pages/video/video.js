@@ -1,5 +1,8 @@
 // pages/video/video.js
 var videoUrl = ''
+var saveTip = ''
+var danmuList = []
+var isShowSave = true
 Page({
 
   /**
@@ -15,9 +18,25 @@ Page({
    */
   onLoad: function(options) {
     videoUrl = options.videoUrl
+    danmuList = options.danmuList
     if (videoUrl != undefined) {
       this.setData({
         'videoUrl': videoUrl
+      })
+    }
+    if (danmuList != undefined) {
+      danmuList = danmuList.split(',')
+      var navigateDanmu = []
+      danmuList.forEach(function(item, index, danmuList) {
+        navigateDanmu.push({
+          'text': item,
+          'color': '#ff0000',
+          
+        })
+      })
+      console.log(navigateDanmu)
+      this.setData({
+        'danmuList': navigateDanmu
       })
     }
 
@@ -76,6 +95,7 @@ Page({
     wx.showLoading({
       title: '保存中...',
     })
+    var that = this
     wx.downloadFile({
       url: videoUrl,
       success: function(res) {
@@ -84,7 +104,7 @@ Page({
             filePath: res.tempFilePath,
             success(res) {
               console.log(res)
-              saveTip = ' 保存成功'
+              saveTip = '保存成功'
               that.setData({
                 saveTip: saveTip
               })
