@@ -10,6 +10,7 @@ var ua = ''
 var queryId = ''
 var queryData = ''
 var insGISId = ''
+var isHaveMore = true
 
 var personalUrl = ''
 var userName = ''
@@ -37,6 +38,18 @@ Page({
    */
   onLoad: function(options) {
     console.log(options)
+    ua = ''
+    queryId = ''
+    queryData = ''
+    insGISId = ''
+    isHaveMore = true
+
+    personalUrl = ''
+    userName = ''
+    picUrls = []
+    isLoading = false;
+    rhxgis = ''
+    userId = ''
     picSrcUrls = []
     // ua = options.ua
     // queryId = options.queryId
@@ -49,6 +62,12 @@ Page({
 
   requestMoreUrl: function(url) {
     if (isLoading) {
+      return
+    }
+    if (!isHaveMore) {
+      wx.showToast({
+        title: '没有更多了，别拉了！！！',
+      })
       return
     }
     isLoading = true
@@ -97,7 +116,8 @@ Page({
         that.preparePicSrcUrls()
         //计算新的 gis
         console.log(picUrls)
-        if (res.data.data.user.edge_owner_to_timeline_media.page_info.has_next_page) {
+        isHaveMore = res.data.data.user.edge_owner_to_timeline_media.page_info.has_next_page
+        if (isHaveMore) {
           queryData = '{"id":"' + userId + '","first":12,"after":"' + res.data.data.user.edge_owner_to_timeline_media.page_info.end_cursor + '"}'
           // console.log(queryData)
           var str = rhxgis + ':' + queryData
@@ -134,24 +154,7 @@ Page({
         if (e.data.errorcode) {
           console.log("请求失败")
         } else {
-          // var postCount = e.data.entry_data.ProfilePage["0"].graphql.user.edge_owner_to_timeline_media.count
-          // avatarName = e.data.entry_data.ProfilePage["0"].graphql.user.username
-          // avatarUrl = e.data.entry_data.ProfilePage["0"].graphql.user.profile_pic_url_hd
-          // personalUrl = url
-          // if (avatarName.length > 12) {
-          //   avatarName = avatarName.substring(0, 11) + '...';
-          // }
-          // dataUrls.push({
-          //   'postCount': postCount,
-          //   'avatarName': avatarName,
-          //   'avatarUrl': avatarUrl,
-          //   'personalUrl': personalUrl
-          // })
-          // wx.setStorageSync(savedAvatarKey, dataUrls)
-          // that.setData({
-          //   'dataUrls': dataUrls,
-          //   'isHidePic': false
-          // })
+
           var tmppicUrls = e.data.entry_data.ProfilePage["0"].graphql.user.edge_owner_to_timeline_media.edges
           queryId = e.data.queryId
           queryData = e.data.queryData
@@ -170,8 +173,6 @@ Page({
                     danmuList.push(item.node.text)
                   })
                 }
-
-
               }
               picUrls = picUrls.concat({
                 'danmuList': danmuList,
