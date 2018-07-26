@@ -179,7 +179,7 @@ Page({
           var shortcodeMedia = e.data.graphql.shortcode_media
           var owner = shortcodeMedia.owner
 
-          avatarUrl = owner.profile_pic_url
+          avatarUrl = api.getOriginData + owner.profile_pic_url
           avatarName = owner.username
           if (shortcodeMedia.edge_sidecar_to_children) {
             for (var index = 0; index < shortcodeMedia.edge_sidecar_to_children.edges.length; index++) {
@@ -196,8 +196,8 @@ Page({
               }
               dataUrls.push({
                 'danmuList': danmuList,
-                "src": node.display_resources[1].src,
-                'videoUrl': isVideo ? node.video_url : '',
+                "src": api.getOriginData + node.display_resources[1].src,
+                'videoUrl': isVideo ? (api.getOriginData + node.video_url) : '',
                 "isVideo": isVideo
               })
             }
@@ -214,8 +214,8 @@ Page({
             console.log(danmuList)
             dataUrls.push({
               'danmuList': danmuList,
-              "src": shortcodeMedia.display_resources[1].src,
-              'videoUrl': shortcodeMedia.is_video ? shortcodeMedia.video_url : '',
+              "src": api.getOriginData + shortcodeMedia.display_resources[1].src,
+              'videoUrl': shortcodeMedia.is_video ? (api.getOriginData + shortcodeMedia.video_url) : '',
               "isVideo": shortcodeMedia.is_video
 
             })
@@ -227,7 +227,7 @@ Page({
           console.log(dataUrls)
           that.setData({
             isHidePic: false,
-            avatarUrl: avatarUrl,
+            avatarUrl: api.getOriginData + avatarUrl,
             avatarName: avatarName,
             // picUrls: picUrl
             // picUrl: picUrl[0]
@@ -286,7 +286,7 @@ Page({
         })
       } else {
         wx.getImageInfo({
-          src: url,
+          src:  url,
           success: function(res) {
             wx.saveImageToPhotosAlbum({
               filePath: res.path,

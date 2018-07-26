@@ -97,7 +97,7 @@ Page({
     })
     var that = this
     wx.downloadFile({
-      url: videoUrl,
+      url: api.getOriginData + videoUrl,
       success: function(res) {
         if (res.statusCode === 200) {
           wx.saveVideoToPhotosAlbum({

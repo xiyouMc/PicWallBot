@@ -82,10 +82,10 @@ Page({
             }
             picUrls = picUrls.concat({
               'danmuList': danmuList,
-              'videoUrl': item.node.is_video ? item.node.video_url : '',
+              'videoUrl': item.node.is_video ? (api.getOriginData +item.node.video_url) : '',
               'isVideo': item.node.is_video,
               'src': item.node.thumbnail_src,
-              'srcHD': item.node.thumbnail_resources[item.node.thumbnail_resources.length - 1].src
+              'srcHD': api.getOriginData + item.node.thumbnail_resources[item.node.thumbnail_resources.length - 1].src
             })
           }
         })
@@ -175,10 +175,10 @@ Page({
               }
               picUrls = picUrls.concat({
                 'danmuList': danmuList,
-                'videoUrl': item.node.is_video ? item.node.video_url : '',
+                'videoUrl': item.node.is_video ? (api.getOriginData +item.node.video_url) : '',
                 'isVideo': item.node.is_video,
-                'src': item.node.thumbnail_src,
-                'srcHD': item.node.thumbnail_resources[item.node.thumbnail_resources.length - 1].src
+                'src': api.getOriginData +item.node.thumbnail_src,
+                'srcHD': api.getOriginData + item.node.thumbnail_resources[item.node.thumbnail_resources.length - 1].src
               })
             }
           })

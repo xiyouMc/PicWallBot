@@ -132,7 +132,7 @@ Page({
         } else {
           var postCount = e.data.entry_data.ProfilePage["0"].graphql.user.edge_owner_to_timeline_media.count
           avatarName = e.data.entry_data.ProfilePage["0"].graphql.user.username
-          avatarUrl = e.data.entry_data.ProfilePage["0"].graphql.user.profile_pic_url_hd
+          avatarUrl = api.getOriginData + e.data.entry_data.ProfilePage["0"].graphql.user.profile_pic_url_hd
           personalUrl = url
           if (avatarName.length > 12) {
             avatarName = avatarName.substring(0, 11) + '...';
